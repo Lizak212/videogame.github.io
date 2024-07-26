@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Video Games</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    header {
+      background-color: black;
+      color: white;
+      padding: 10px;
+    }
+
+    .button-link {
+      text-decoration: none;
+      color: white;
+      margin: 50px;
+    }
+
+    .button-link:hover {
+      background-color: blue;
+      color: black;
+    }
+
+    .carousel {
+      width: 300px;
+      height: 300px;
+      position: relative;
+      overflow: hidden;
+      border: solid black 5px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .carousel-images {
+      display: flex;
+    }
+    
+    .carousel-images img {
+      width: 300px;
+      height: 300px;
+      cursor: pointer;
+    }
+
+    .alert {
+      width: 250px;
+      height: 250px;
+      visibility: hidden;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+
+    .alert-image {
+      width: 250px;
+      height: 250px;
+    }
+    
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <a class = "button-link" href = "index.html" >Home Page</a>
+    <a class = "button-link" href = "games.html" >View Games</a>
+  </header>
+
+  <div class = "games">
+    <h3>The Last of Us</h3>
+
+    <div class = "carousel" id = "The Last of Us">
+      <div class = "carousel-images">
+        <img src = "TLOU_cover.jpeg" onclick = "show_alert ('TLOU_cover.jpeg')">
+        <img src = "TLOU_Scene1.jpeg" onclick = "show_alert('TLOU_Scene1.jpeg')">
+        <img src = "TLOU_Scene2.jpeg" onclick = "show_alert('TLOU_Scene2.jpeg')">
+      </div>
+    </div>
+  </div>
+ 
+  <div class = "games">
+    <h3>Plants Vs Zombies Garden Warefare</h3>
+
+    <div class = "carousel" id = "Plants vs Zombies Garden Warefare">
+      <div class = "carousel-images">
+        <img src = "PVZ_cover.jpeg" onclick = "show_alert('PVZ_cover.jpeg')">
+        <img src = "PVZ_Scene1.jpeg" onclick = "show_alert('PVZ_Scene1.jpeg')">
+        <img src = "PVZ_Scene2.jpeg" onclick = "show_alert('PVZ_Scene2.jpeg')">
+      </div>
+    </div>
+  </div>
+
+  <div class = "games">
+    <h3>New Super Mario Bros.Wii</h3>
+
+    <div class = "carousel" id = "NewSuperMarioBrosWii">
+      <div class = "carousel-images">
+        <img src = "SMB_cover.png" onclick = "show_alert('SMB_cover.png')">
+        <img src = "SMB_Scene1.webp" onclick = "show_alert('SMB_Scene1.webp')">
+        <img src = "SMB_Scene2.jpeg" onclick = "show_alert('SMB_Scene2.jpeg')">
+      </div>
+    </div>
+  </div>
+
+  <div class = "alert" id = "alert" onclick = "hide_alert()">
+    <img class = "alert-image" id = "alert-image">
+  </div>
+
+  <script> 
+    var index = 0; 
+    var all_carousels = document.querySelectorAll (".carousel");
+    var keydownlistener = null;
+
+    all_carousels.forEach (function (current_carousel) {
+      current_carousel.addEventListener ("mouseenter", function (event) {
+        addKeyListener (event.target.id); 
+      });
+
+      current_carousel.addEventListener ("mouseleave", function (event) {
+        removeKeyListener ();
+      });
+    });
+    
+    function change_image (carousel_id, amount) {
+      var carousel = document.getElementById(carousel_id);
+      var images = carousel.querySelectorAll(".carousel-images img");
+      
+      index += amount; 
+      if (index < 0) {
+        index = images.length - 1;
+      } else if (index > images.length - 1) {
+        index = 0; 
+      }
+
+      for (var i = 0; i < images.length; i++) {
+        if (i == index) { 
+          images[i].style.display = "block";    
+        } else {
+          images[i].style.display = "none";
+        }
+      } 
+    }
+
+    function addKeyListener (carousel_id) {
+      keydownlistener = function (event) {
+        if (event.key == "ArrowLeft") {
+          change_image (carousel_id, - 1);
+        } else if (event.key == "ArrowRight") {
+          change_image (carousel_id, 1);
+        }
+      };
+      document.addEventListener ("keydown", keydownlistener);
+    }
+
+    function removeKeyListener () {
+      if (keydownlistener != null) {
+        document.removeEventListener ("keydown", keydownlistener);
+        keydownlistener = null;
+      }
+    }
+
+    change_image ("The Last of Us", 0);
+    change_image ("Plants vs Zombies Garden Warefare", 0);
+    change_image ("NewSuperMarioBrosWii", 0);
+
+    function show_alert (image) {
+      document.getElementById("alert").style.visibility = "visible";
+      document.getElementById("alert-image").src = image;      
+    }
+
+    function hide_alert () {
+      document.getElementById("alert").style.visibility = "hidden";
+    }
+  </script>
+  
+</body>
+
+</html>
